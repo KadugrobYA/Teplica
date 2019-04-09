@@ -10,15 +10,90 @@
 
     <Button
         android:id="@+id/btLedOne"
-        android:text="@string/led_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Окно" />
+<CheckBox
+    android:id="@+id/Okavto"
+    android:checked="true"
+    android:layout_marginTop="10dp"
+    android:text="Avto Окна"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btYvlaznitl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Увлажнитель" />
+    <CheckBox
+        android:id="@+id/Yvavto"
+        android:checked="true"
+        android:layout_marginTop="10dp"
+        android:text="Avto Увлажнитель"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:text="Полив 1"
+        android:paddingLeft="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/T1_cherez"
+        android:text="Через"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
+    <SeekBar
+        app:layout_constraintTop_toBottomOf="@+id/T1_cherez"
+        android:max="60"
+        android:id="@+id/seekBar1_cherez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/T1_po"
+        android:text="По"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btLedTwo"
-        android:text="@string/led_two"
-        android:layout_width="wrap_content"
+    <SeekBar
+        app:layout_constraintTop_toBottomOf="@+id/T1_po"
+        android:max="60"
+        android:id="@+id/seekBar1_po"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    /////
+    <TextView
+        android:text="Полив 2"
+        android:paddingLeft="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/T2_cherez"
+        android:text="Через"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <SeekBar
+        app:layout_constraintTop_toBottomOf="@+id/T2_cherez"
+        android:max="60"
+        android:id="@+id/seekBar2_cherez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/T2_po"
+        android:text="По"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <SeekBar
+        app:layout_constraintTop_toBottomOf="@+id/T2_po"
+        android:max="60"
+        android:id="@+id/seekBar2_po"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

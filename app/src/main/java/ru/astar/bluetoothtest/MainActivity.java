@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,17 +29,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private static final int REQ_ENABLE_BLUETOOTH = 1001;
     public final String TAG = getClass().getSimpleName();
 
     private Button btLedOne;
-    private Button btLedTwo;
-
+    private Button btYvl;
     private boolean isEnabledLedOne = false;
-    private boolean isEnabledLedTwo = false;
+    private boolean isEnabledYvl = false;
 
     private BluetoothAdapter mBluetoothAdapter;
     private ProgressDialog mProgressDialog;
@@ -50,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listDevices;
 
+////////////////////
+private TextView cherez1;
+private TextView po1;
+    private TextView cherez2;
+    private TextView po2;
+
+    private CheckBox oknoAvto;
+    private CheckBox YvlAvto;
+    ///////////////////////
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
@@ -57,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btLedOne = findViewById(R.id.btLedOne);
-        btLedTwo = findViewById(R.id.btLedTwo);
         btLedOne.setOnClickListener(clickListener);
-        btLedTwo.setOnClickListener(clickListener);
+        btYvl = findViewById(R.id.btYvlaznitl);
+        btYvl.setOnClickListener(clickListener);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -72,25 +85,116 @@ public class MainActivity extends AppCompatActivity {
         // включаем bluetooth
         enableBluetooth();
 
-        if(mInputStream !=null){
-            byte[] buffer = new byte[256];
-            int bytes = 0;
-            String readMessage="";
-            try {
-                bytes = mInputStream.read(buffer);
-                readMessage = new String(buffer, 0, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
+//////////////////////////////////////////////////
+        cherez1 = (TextView)findViewById(R.id.T1_cherez);
+        cherez1.setText("Через 0 мин");
+        po1 = (TextView)findViewById(R.id.T1_po);
+        po1.setText("По 0 сек");
+        cherez2 = (TextView)findViewById(R.id.T2_cherez);
+        cherez2.setText("Через 0 мин");
+        po2 = (TextView)findViewById(R.id.T2_po);
+        po2.setText("По 0 сек");
+       final SeekBar seekBar_cherez1 = (SeekBar)findViewById(R.id.seekBar1_cherez);
+        seekBar_cherez1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                cherez1.setText("Через "+String.valueOf(progress)+" мин");
             }
-            if(readMessage!=null){
-                showToastMessage(readMessage);
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
             }
 
-        }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setMessage("s1_ch1_"+String.valueOf(seekBar.getProgress()));
+            }
+        });
+        final SeekBar seekBar_po1 = (SeekBar)findViewById(R.id.seekBar1_po);
+        seekBar_po1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+                po1.setText("По "+String.valueOf(progress)+" сек");
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setMessage("s1_po1_"+String.valueOf(seekBar.getProgress()));
+            }
+        });
+        final SeekBar seekBar_cherez2 = (SeekBar)findViewById(R.id.seekBar2_cherez);
+        seekBar_cherez2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                cherez2.setText("Через "+String.valueOf(progress)+" мин");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setMessage("s2_ch1_"+String.valueOf(seekBar.getProgress()));
+            }
+        });
+        final SeekBar seekBar_po2 = (SeekBar)findViewById(R.id.seekBar2_po);
+        seekBar_po2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                po2.setText("По "+String.valueOf(progress)+" сек");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setMessage("s2_po1_"+String.valueOf(seekBar.getProgress()));
+            }
+        });
+
+        oknoAvto =(CheckBox)findViewById(R.id.Okavto);
+        oknoAvto.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    setMessage("0");
+                }
+
+            }
+        });
+        YvlAvto=(CheckBox)findViewById(R.id.Yvavto);
+        YvlAvto.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    setMessage("3");
+                }
+
+            }
+        });
+        ////////////////////////////////////////////////
     }
+//////////////////////////////////////////////////////
 
+
+    /////////////////////////////////////////////////////////////
 protected void onDestroy(){
         super.onDestroy();
         if(mBluetoothSocket !=null){
@@ -208,8 +312,10 @@ protected void onDestroy(){
             startActivityForResult(intent, REQ_ENABLE_BLUETOOTH);
         }
     }
-    private void setMessage(int command){
-        byte buffer = (byte)command;
+    //отправка команды
+    private void setMessage(String command){
+        command+="/";
+        byte []buffer = command.getBytes();
         Log.d(TAG, "setMessage buffer:  " + buffer);
         if(mOutputStream !=null){
             try {
@@ -230,6 +336,7 @@ protected void onDestroy(){
                 mBluetoothSocket.connect();
                 mOutputStream = mBluetoothSocket.getOutputStream(); // Присваеваем выходной поток
                 mInputStream = mBluetoothSocket.getInputStream();
+
                 showToastMessage("Подключено BL");
             }catch (Exception e){
                 showToastMessage("Ошибка Подключения BL");
@@ -261,29 +368,38 @@ protected void onDestroy(){
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View view) {
+        public void onClick(View view)
+        {
             // нажата кнопка для управления первым светодиодом
-            int command=0;
+            String command="";
             if (view.equals(btLedOne)) {
                 isEnabledLedOne = !isEnabledLedOne;
                 if(isEnabledLedOne){
-                    command=1;
+                    command="1";
+                    btLedOne.setText("Окно открыто");
+                    oknoAvto.setChecked(false);
                 }else{
-                    command=2;
+                    command="2";
+                    btLedOne.setText("Окно закрыто");
+                    oknoAvto.setChecked(false);
+                }
+                Log.d(TAG, "onClick: isEnabledLedOne = " + isEnabledLedOne);
+            }
+            if (view.equals(btYvl)) {
+                isEnabledYvl = !isEnabledYvl;
+                if(isEnabledYvl){
+                    command="4";
+                    btYvl.setText("Увлажнитель Включен");
+                    YvlAvto.setChecked(false);
+                }else{
+                    command="5";
+                    btYvl.setText("Увлажнитель Выключен");
+                    YvlAvto.setChecked(false);
                 }
                 Log.d(TAG, "onClick: isEnabledLedOne = " + isEnabledLedOne);
             }
 
-            // нажата кнопка для управления вторым светодиодом
-            if (view.equals(btLedTwo)) {
-                isEnabledLedTwo = !isEnabledLedTwo;
-                if(isEnabledLedTwo){
-                    command=3;
-                }else{
-                    command=4;
-                }
-                Log.d(TAG, "onClick: isEnabledLedTwo = " + isEnabledLedTwo);
-            }
+
             setMessage(command);
         }
     };
